@@ -21,12 +21,12 @@ def encode(lines: list[str]) -> str:
 
 
 def _encode(line):
-    return urlsafe_b64encode(line.encode()).decode('utf-8')
+    return urlsafe_b64encode(line + '=' * (-len(line) % 4).encode()).decode('utf-8')
 
 
 def decode(slug: str) -> list[str]:
     lines = slug.split("/")
-    lines = [urlsafe_b64decode(line.encode()).decode('utf-8') for line in lines]
+    lines = [urlsafe_b64decode((line + '=' * (-len(line) % 4)).encode()).decode('utf-8') for line in lines]
 
     return lines
 
