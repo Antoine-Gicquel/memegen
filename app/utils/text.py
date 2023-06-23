@@ -1,6 +1,7 @@
 import hashlib
 import re
 from urllib.parse import unquote
+from base64 import urlsafe_b64decode, urlsafe_b64encode
 
 
 def encode(lines: list[str]) -> str:
@@ -20,68 +21,12 @@ def encode(lines: list[str]) -> str:
 
 
 def _encode(line):
-    has_trailing_under = "_ " in line
-
-    encoded = unquote(line)
-
-    for before, after in [
-        ("_", "__"),
-        ("-", "--"),
-        (" ", "_"),
-        ("?", "~q"),
-        ("%", "~p"),
-        ("#", "~h"),
-        ('"', "''"),
-        ("/", "~s"),
-        ("\\", "~b"),
-        ("\n", "~n"),
-        ("&", "~a"),
-        ("<", "~l"),
-        (">", "~g"),
-        ("‘", "'"),
-        ("’", "'"),
-        ("“", '"'),
-        ("”", '"'),
-        ("–", "-"),
-    ]:
-        encoded = encoded.replace(before, after)
-
-    if has_trailing_under:
-        encoded = encoded.replace("___", "__-")
-
-    return encoded
+    return urlsafe_b64encode(line.encode()).decode('utf-8')
 
 
 def decode(slug: str) -> list[str]:
-    has_dash = "_----" in slug
-    has_arrow = "_--~g" in slug
-    has_under = "___" in slug
-
-    slug = slug.replace("_", " ").replace("  ", "_")
-    slug = slug.replace("-", " ").replace("  ", "-")
-    slug = slug.replace("''", '"')
-
-    if has_dash:
-        slug = slug.replace("-- ", " --")
-    if has_arrow:
-        slug = slug.replace("- ~g", " -~g")
-    if has_under:
-        slug = slug.replace("_ ", " _")
-
-    for before, after in [
-        ("~q", "?"),
-        ("~p", "%"),
-        ("~h", "#"),
-        ("~n", "\n"),
-        ("~a", "&"),
-        ("~l", "<"),
-        ("~g", ">"),
-        ("~b", "\\"),
-    ]:
-        slug = slug.replace(before, after)
-
     lines = slug.split("/")
-    lines = [line.replace("~s", "/") for line in lines]
+    lines = [urlsafe_b64decode(line.encode()).decode('utf-8') for line in lines]
 
     return lines
 

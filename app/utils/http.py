@@ -1,4 +1,5 @@
 import asyncio
+import os
 
 import aiofiles
 import aiohttp
@@ -35,6 +36,9 @@ async def fetch(url: str, **kwargs) -> tuple[int, dict | str]:
 
 
 async def download(url: str, path: AsyncPath) -> bool:
+    _url_prefix = os.getenv("MEMEGEN_DEFAULT_OVERLAY_PREFIX", default="")
+    if _url_prefix != "":
+        url = _url_prefix + url
     async with aiohttp.ClientSession() as session:
         try:
             async with session.get(url, timeout=10) as response:

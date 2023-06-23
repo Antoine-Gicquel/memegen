@@ -28,6 +28,7 @@ COPY --chown=memegen requirements.txt /opt/memegen
 COPY --chown=memegen pyproject.toml /opt/memegen/
 COPY --chown=memegen runtime.txt /opt/memegen/
 COPY --chown=memegen CHANGELOG.md /opt/memegen/CHANGELOG.md
+COPY --chown=memegen entrypoint.sh /opt/entrypoint.sh
 
 # Install Python Requirements
 RUN pip install wheel && \
@@ -40,9 +41,4 @@ ENV MAX_REQUESTS="${ARG_MAX_REQUESTS:-0}"
 ENV MAX_REQUESTS_JITTER="${ARG_MAX_REQUESTS_JITTER:-0}"
 
 # Set the entrypoint
-ENTRYPOINT gunicorn --bind "0.0.0.0:$PORT" \
-    --worker-class uvicorn.workers.UvicornWorker  \
-    --max-requests="$MAX_REQUESTS" \
-    --max-requests-jitter="$MAX_REQUESTS_JITTER" \
-    --timeout=20  \
-    app.main:app
+ENTRYPOINT /opt/entrypoint.sh
