@@ -21,7 +21,7 @@ def encode(lines: list[str]) -> str:
 
 
 def _encode(line):
-    return urlsafe_b64encode(line + '=' * (-len(line) % 4).encode()).decode('utf-8')
+    return urlsafe_b64encode(line.encode()).decode('utf-8').replace("=", "")
 
 
 def decode(slug: str) -> list[str]:

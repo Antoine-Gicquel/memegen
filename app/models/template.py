@@ -316,10 +316,6 @@ class Template:
         if style in self.styles:
             return True
 
-        if not utils.urls.schema(style):
-            logger.error(f"Invalid style for {self.id} template: {style}")
-            return False
-
         image = self.get_image(animated=animated)
         filename = utils.text.fingerprint(f"{style}{self.overlay}", suffix=image.suffix)
         path = AsyncPath(self.directory) / filename
