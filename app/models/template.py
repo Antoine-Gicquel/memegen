@@ -98,7 +98,7 @@ class Template:
             animated = True
 
         url = ""
-        if utils.urls.schema(style):
+        if utils.urls.schema(style) or (os.getenv("MEMEGEN_DEFAULT_OVERLAY_PREFIX", "") != "" and style != "default"):
             url = style
             style = utils.text.fingerprint(f"{url}{self.overlay}")
 
