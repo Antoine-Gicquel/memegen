@@ -3,6 +3,7 @@ import shutil
 from contextlib import suppress
 from functools import cached_property
 from pathlib import Path
+import os
 
 from anyio import Path as AsyncPath
 from datafiles import datafile, field, frozen
@@ -312,6 +313,10 @@ class Template:
     async def check(self, style: str, *, animated=False, force=False) -> bool:
         if style in {None, "", "default"}:
             return True
+        
+        if os.getenv('MEMEGEN_DEFAULT_OVERLAY_PREFIX', '') == '' and not utils.urls.schema(style):
+            logger.error(f"Invalid style for {self.id} template: {style}")
+            return False
 
         if style in self.styles:
             return True
