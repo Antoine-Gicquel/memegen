@@ -6,11 +6,14 @@ ARG ARG_MAX_REQUESTS_JITTER=0
 FROM docker.io/python:3.12.0-bullseye as build
 
 # Install webp dependencies
-RUN apt update && apt install -y webp cmake
+RUN apt update && apt install -y webp cmake curl
 
 # Create the memegen user
 RUN useradd -md /opt/memegen -u 1000 memegen
 USER memegen
+
+# Install poetry
+RUN curl -sSL https://install.python-poetry.org | python3 -
 
 # Set the Working Directory to /opt/memegen
 WORKDIR /opt/memegen
@@ -24,15 +27,13 @@ COPY --chown=memegen bin /opt/memegen/bin
 COPY --chown=memegen app /opt/memegen/app
 
 # Copy Specific Files
-COPY --chown=memegen requirements.txt /opt/memegen
+COPY --chown=memegen Makefile /opt/memegen/
 COPY --chown=memegen pyproject.toml /opt/memegen/
-COPY --chown=memegen runtime.txt /opt/memegen/
 COPY --chown=memegen CHANGELOG.md /opt/memegen/CHANGELOG.md
 COPY --chown=memegen entrypoint.sh /opt/entrypoint.sh
 
 # Install Python Requirements
-RUN pip install wheel && \
-    pip install -r /opt/memegen/requirements.txt
+RUN /opt/memegen/.local/bin/poetry install
 
 # Set the environment variables
 ENV PATH="/opt/memegen/.local/bin:${PATH}"

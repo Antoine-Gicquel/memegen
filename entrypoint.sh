@@ -2,7 +2,7 @@
 
 NB_CORES=$(grep processor /proc/cpuinfo | wc -l)
 
-gunicorn --bind "0.0.0.0:$PORT" \
+poetry run gunicorn --bind "0.0.0.0:$PORT" \
     --worker-class uvicorn.workers.UvicornWorker  \
     --max-requests="$MAX_REQUESTS" \
     --max-requests-jitter="$MAX_REQUESTS_JITTER" \
