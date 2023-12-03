@@ -11,8 +11,8 @@ dev: install ## Rerun all validation targests in a loop
 ###############################################################################
 # System Dependencies
 
-.PHONY: boostrap
-boostrap: ## Attempt to install system dependencies
+.PHONY: bootstrap
+bootstrap: ## Attempt to install system dependencies
 	asdf plugin add python || asdf plugin update python
 	asdf plugin add poetry https://github.com/asdf-community/asdf-poetry.git || asdf plugin update poetry
 	asdf install
@@ -29,7 +29,7 @@ BACKEND_DEPENDENCIES := .venv/.flag
 .PHONY: install
 install: $(BACKEND_DEPENDENCIES) ## Install project dependencies
 
-$(BACKEND_DEPENDENCIES): poetry.lock runtime.txt requirements.txt
+$(BACKEND_DEPENDENCIES): poetry.lock
 	@ poetry config virtualenvs.in-project true
 ifdef CI
 	poetry install
@@ -42,10 +42,6 @@ ifndef CI
 poetry.lock: pyproject.toml
 	poetry lock --no-update
 	@ touch $@
-runtime.txt: .tool-versions
-	echo $(shell grep '^python ' $< | tr ' ' '-') > $@
-requirements.txt: poetry.lock
-	poetry export --format requirements.txt --output $@ --without-hashes
 endif
 
 site: install
@@ -61,11 +57,11 @@ endif
 .PHONY: clean
 clean:
 	rm -rf images site templates/_custom-* templates/*/_*
+	rm -rf *.egg-info .venv
 
 .PHONY: clean-all
 clean-all: clean
 	rm -rf app/tests/images
-	rm -rf *.egg-info .venv
 
 ###############################################################################
 # Development Tasks

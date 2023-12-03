@@ -65,6 +65,7 @@ def decode(slug: str) -> list[str]:
         return lines
     else:
         has_dash = "_----" in slug
+        has_flag = "_--" in slug
         has_arrow = "_--~g" in slug
         has_under = "___" in slug
 
@@ -74,8 +75,12 @@ def decode(slug: str) -> list[str]:
 
         if has_dash:
             slug = slug.replace("-- ", " --")
+        elif has_flag:
+            slug = slug.replace("- ", " -")
+
         if has_arrow:
             slug = slug.replace("- ~g", " -~g")
+
         if has_under:
             slug = slug.replace("_ ", " _")
 

@@ -13,19 +13,16 @@
     "bin/verchew": true
   },
   "python.defaultInterpreterPath": ".venv/bin/python",
-  "python.formatting.provider": "black",
-  "python.linting.enabled": true,
-  "python.linting.lintOnSave": true,
-  "python.linting.mypyEnabled": true,
   "editor.formatOnSave": true,
   "cSpell.words": [
+    "Ackbar",
     "aiocache",
     "aiofiles",
     "aiohttp",
     "aiopath",
     "aioresponses",
+    "Aladin",
     "anyio",
-    "apng",
     "asdict",
     "autouse",
     "Baggins",
@@ -40,8 +37,10 @@
     "Containerfile",
     "danmanners",
     "Drakeposting",
+    "Ducreux",
     "Earther",
     "exif",
+    "Futurama",
     "getbbox",
     "getenv",
     "getoffset",
@@ -55,6 +54,7 @@
     "Gustin",
     "Hain",
     "Halpert",
+    "Harkness",
     "Hedberg",
     "herokuapp",
     "htmlcov",
@@ -93,6 +93,7 @@
     "removesuffix",
     "RGBA",
     "sanic",
+    "Schrute",
     "Segoe",
     "setuptools",
     "showfspath",
@@ -109,6 +110,7 @@
     "uvicorn",
     "verchew",
     "webp",
-    "Wonka"
+    "Wonka",
+    "Zoidberg"
   ]
 }

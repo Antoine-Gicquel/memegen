@@ -43,12 +43,12 @@ class Text:
         )
 
     @classmethod
-    def get_remark(cls) -> "Text":
+    def get_message(cls) -> "Text":
         return cls(color="#FFC107", anchor_x=0.5)
 
     @classmethod
     def get_watermark(cls) -> "Text":
-        return cls(color="#FFFFFF" + alpha(0.75))
+        return cls(color="#FFFFFF" + alpha(settings.WATERMARK_ALPHA))
 
     @property
     def animated(self) -> bool:
