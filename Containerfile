@@ -38,7 +38,7 @@ ENV MAX_REQUESTS="${ARG_MAX_REQUESTS:-0}"
 ENV MAX_REQUESTS_JITTER="${ARG_MAX_REQUESTS_JITTER:-0}"
 
 # Set the entrypoint
-ENTRYPOINT gunicorn --bind "0.0.0.0:$PORT" \
+ENTRYPOINT poetry run gunicorn --bind "0.0.0.0:$PORT" \
     --worker-class uvicorn.workers.UvicornWorker  \
     --max-requests="$MAX_REQUESTS" \
     --max-requests-jitter="$MAX_REQUESTS_JITTER" \
